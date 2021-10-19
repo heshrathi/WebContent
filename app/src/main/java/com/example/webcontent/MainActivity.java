@@ -23,28 +23,43 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    //class for downloading web contect
-    public class DownWebContent extends AsyncTask<String, Void, String> { //pass in string, get return string
+    //class for downloading web content
+    public class DownWebContent extends AsyncTask<String, Void, String> {
+        //pass in string, get return string
 
         @Override
         protected String doInBackground(String... urls) {
+            //typical type of string array -> String...
 
             String result = "";
             URL url;
+            //string into a URL object
             HttpURLConnection httpURLConnection = null;
+            //retrieve information of any HTTP URL such as header information, status code, response code etc.
 
             try {
                 url = new URL(urls[0]);
+                //convert string into actual url using new URL object
+
                 httpURLConnection = (HttpURLConnection) url.openConnection();
+                //http url new connection using openConnection() and casting the result in httpURLConnection
+
                 InputStream in = httpURLConnection.getInputStream();
+                //gather data coming through
+
                 InputStreamReader reader = new InputStreamReader(in);
+                //read the data
+
                 int data = reader.read();
 
                 while(data != -1) {
                     char current = (char) data;
 
                     result += current;
+                    //add data letter by letter
+
                     data = reader.read();
+                    //run untill the data is finished
                 }
 
                 return result;
@@ -95,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
 //                    result[0] = downWebContent.execute(editText.getText().toString()).get();
-                    result[0] = downWebContent.execute("https://docs.agora.io/en/All/faq/restful_authentication").get();
+                    result[0] = downWebContent.execute("https://www.google.com").get();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
