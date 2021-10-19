@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,11 +86,13 @@ public class MainActivity extends AppCompatActivity {
         TextView textView;
         EditText editText;
         Button reset, send;
+        ProgressBar progressBar;
 
         editText = findViewById(R.id.editView);
         textView = findViewById(R.id.resultTextView);
         reset = findViewById(R.id.resetBtn);
         send = findViewById(R.id.sendBtn);
+        progressBar = findViewById(R.id.progressBar);
 
         DownWebContent downWebContent = new DownWebContent();
         final String[] result = {""};
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.INVISIBLE);
                 textView.setVisibility(View.INVISIBLE);
                 editText.setText("");
             }
@@ -107,10 +111,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 textView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
 
                 try {
-//                    result[0] = downWebContent.execute(editText.getText().toString()).get();
-                    result[0] = downWebContent.execute("https://www.google.com").get();
+                    result[0] = downWebContent.execute(editText.getText().toString()).get();
+//                    result[0] = downWebContent.execute("https://www.google.com").get();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
@@ -118,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.i("Result: ", result[0]);
                 textView.setText(result[0]);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
